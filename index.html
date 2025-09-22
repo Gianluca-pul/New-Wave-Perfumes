@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Wave Perfumes</title>
+    <link rel="stylesheet" href="Css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="brand">
+                    <h1>New Wave</h1>
+                </div>
+                <div class="navlinks">
+                    <a href="#about">Sobre Nosotros</a>
+                    <a href="#stock">Stock</a>
+                    <a href="#contact">Contáctanos</a>
+                    <a href="#payment">Métodos de Pago</a>
+                </div>
+                <button id="openCart" class="btn cart-btn">
+                    🛒
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div>
+                <h2>Perfumes Exclusivos</h2>
+                <p>Descubre fragancias únicas para cada momento especial.</p>
+                <a href="#stock" class="cta">Ver Catálogo</a>
+            </div>
+            <div class="hero-card">
+                <img src="https://images.unsplash.com/photo-1596464716127-4b94f8a1fef6?auto=format&fit=crop&w=800&q=60"
+                    alt="Perfume destacado">
+            </div>
+        </section>
+
+        <section id="stock">
+            <div class="products-header">
+                <h2>Nuestro Stock</h2>
+                <select id="filter" class="select">
+                    <option value="all">Todos</option>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Mujer</option>
+                    <option value="unisex">Unisex</option>
+                </select>
+            </div>
+            <div id="productGrid" class="grid"></div>
+        </section>
+
+        <section id="about">
+            <h2>Sobre Nosotros</h2>
+            <p>Somos una perfumería dedicada a traer las mejores fragancias internacionales a precios accesibles.</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contáctanos</h2>
+            <div class="grid-2">
+                <form id="contactForm">
+                    <input type="text" id="name" placeholder="Tu nombre">
+                    <input type="email" id="email" placeholder="Tu email">
+                    <textarea id="message" placeholder="Escribe tu mensaje"></textarea>
+                    <button class="btn btn-primary">Enviar</button>
+                </form>
+                <div>
+                    <h3>Suscríbete a nuestras novedades</h3>
+                    <input type="email" id="subEmail" placeholder="Tu email">
+                    <button id="subscribeBtn" class="btn btn-primary">Suscribirme</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="cartDrawer" class="drawer" style="display:none;">
+        <div class="cart-panel">
+            <header>Carrito</header>
+            <div id="cartList" class="cart-list"></div>
+            <div class="cart-footer">
+                <strong>Total: <span id="cartTotal">$0</span></strong>
+                <button id="checkoutBtn" class="btn btn-primary">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container">
+        <p>Todos los derechos reservados © NewWavePerfumes</p>
+    </footer>
+
+    <script src="JS/script.js"></script>
+</body>
+
+</html>
