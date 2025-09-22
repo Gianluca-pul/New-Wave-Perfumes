@@ -1,62 +1,84 @@
-const products = [
-    { id: 1, title: 'Aurora - Eau de Parfum', price: 59.90, gender: 'mujer', img: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=60', desc: 'Notas florales y ámbar.' },
-    { id: 2, title: 'Noir Essence', price: 72.00, gender: 'hombre', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=60', desc: 'Aromas amaderados y especiados.' },
-    { id: 3, title: 'Citrus Bloom', price: 39.50, gender: 'unisex', img: 'https://images.unsplash.com/photo-1556228453-5f98e6f7d8f6?auto=format&fit=crop&w=800&q=60', desc: 'Fresco y cítrico para el día a día.' },
-    { id: 4, title: 'Velvet Oud', price: 89.90, gender: 'hombre', img: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=60', desc: 'Intenso, oriental con oud.' },
-    { id: 5, title: 'Rose Whisper', price: 44.20, gender: 'mujer', img: 'https://images.unsplash.com/photo-1545972152-385b0d1b39d6?auto=format&fit=crop&w=800&q=60', desc: 'Rosas y toques empolvados.' }
+
+// LISTA DE PRODUCTOS
+const productos = [
+    { id: 1, title: 'Aurora - Eau de Parfum', price: 59.90, gender: 'mujer', img: '', desc: 'Notas florales y ámbar.' },
+    { id: 2, title: 'Noir Essence', price: 72.00, gender: 'hombre', img: '', desc: 'Aromas amaderados y especiados.' },
+    { id: 3, title: 'Citrus Bloom', price: 39.50, gender: 'unisex', img: '', desc: 'Fresco y cítrico para el día a día.' },
+    { id: 4, title: 'Velvet Oud', price: 89.90, gender: 'hombre', img: '', desc: 'Intenso, oriental con oud.' },
+    { id: 5, title: 'Rose Whisper', price: 44.20, gender: 'mujer', img: '', desc: 'Rosas y toques empolvados.' }
 ];
 
-let cart = JSON.parse(localStorage.getItem('nw_cart') || '[]');
-const grid = document.getElementById('productGrid');
-const filter = document.getElementById('filter');
 
-function renderProducts() {
-    const f = filter.value;
-    grid.innerHTML = '';
-    const list = products.filter(p => f === 'all' ? true : p.gender === f);
-    list.forEach(p => {
+// ESTADO DEL CARRITO (se guarda en localStorage)
+let carrito = JSON.parse(localStorage.getItem('nw_carrito') || '[]');
+
+
+// REFERENCIAS A ELEMENTOS DEL DOM
+const cuadricula = document.getElementById('cuadriculaProductos');
+const filtro = document.getElementById('filtro');
+const cajonCarrito = document.getElementById('cajonCarrito');
+const listaCarrito = document.getElementById('listaCarrito');
+const totalCarrito = document.getElementById('totalCarrito');
+const contadorCarrito = document.getElementById('contadorCarrito');
+
+
+// RENDERIZADO DE PRODUCTOS
+function renderizarProductos() {
+    const f = filtro.value; // valor del filtro seleccionado
+    cuadricula.innerHTML = '';
+
+    // Filtra por género (hombre/mujer/unisex) o muestra todos
+    const lista = productos.filter(p => f === 'all' ? true : p.gender === f);
+
+    // Crea dinámicamente las tarjetas de productos
+    lista.forEach(p => {
         const el = document.createElement('div');
-        el.className = 'card';
+        el.className = 'tarjeta';
         el.innerHTML = `
             <img src="${p.img}" alt="${p.title}">
             <h3>${p.title}</h3>
             <div class="muted">${p.desc}</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-                <div class="price">$${p.price.toFixed(2)}</div>
+                <div class="precio">$${p.price.toFixed(2)}</div>
             </div>
-            <div class="actions">
-                <button class="btn btn-primary" onclick="addToCart(${p.id})">Agregar</button>
-                <button class="btn btn-ghost" onclick="viewProduct(${p.id})">Ver</button>
+            <div class="acciones">
+                <button class="btn btn-primario" onclick="agregarAlCarrito(${p.id})">Agregar</button>
+                <button class="btn btn-ghost" onclick="verProducto(${p.id})">Ver</button>
             </div>
         `;
-        grid.appendChild(el);
+        cuadricula.appendChild(el);
     });
 }
 
-filter.addEventListener('change', renderProducts);
-renderProducts();
+// Escucha cambios en el select de filtro y vuelve a renderizar
+filtro.addEventListener('change', renderizarProductos);
 
-const cartDrawer = document.getElementById('cartDrawer');
-const cartList = document.getElementById('cartList');
-const cartTotal = document.getElementById('cartTotal');
-const cartCountEl = document.getElementById('cartCount');
+// Render inicial de los productos
+renderizarProductos();
 
-function saveCart() {
-    localStorage.setItem('nw_cart', JSON.stringify(cart));
-    updateCartUI();
+
+// FUNCIONES DE CARRITO
+
+// Guarda el carrito en localStorage y actualiza la interfaz
+function guardarCarrito() {
+    localStorage.setItem('nw_carrito', JSON.stringify(carrito));
+    actualizarCarritoUI();
 }
 
-function updateCartUI() {
-    cartList.innerHTML = '';
+// Actualiza los elementos visibles del carrito
+function actualizarCarritoUI() {
+    listaCarrito.innerHTML = '';
     let total = 0;
-    let qty = 0;
-    cart.forEach(item => {
-        const p = products.find(x => x.id === item.id);
+    let cantidad = 0;
+
+    carrito.forEach(item => {
+        const p = productos.find(x => x.id === item.id);
         total += p.price * item.qty;
-        qty += item.qty;
-        const node = document.createElement('div');
-        node.className = 'cart-item';
-        node.innerHTML = `
+        cantidad += item.qty;
+
+        const nodo = document.createElement('div');
+        nodo.className = 'item-carrito';
+        nodo.innerHTML = `
             <img src="${p.img}" alt="${p.title}">
             <div style="flex:1">
                 <div style="display:flex;justify-content:space-between">
@@ -65,79 +87,90 @@ function updateCartUI() {
                 </div>
                 <div class="muted">
                     Cantidad: 
-                    <button class="btn" onclick="changeQty(${p.id},-1)">-</button> 
+                    <button class="btn" onclick="cambiarCantidad(${p.id},-1)">-</button> 
                     ${item.qty} 
-                    <button class="btn" onclick="changeQty(${p.id},1)">+</button>
+                    <button class="btn" onclick="cambiarCantidad(${p.id},1)">+</button>
                 </div>
             </div>
         `;
-        cartList.appendChild(node);
+        listaCarrito.appendChild(nodo);
     });
-    cartTotal.textContent = `$${total.toFixed(2)}`;
-    cartCountEl.textContent = qty;
+
+    totalCarrito.textContent = `$${total.toFixed(2)}`;
+    contadorCarrito.textContent = cantidad;
 }
 
-function addToCart(id) {
-    const found = cart.find(i => i.id === id);
-    if (found) found.qty++;
-    else cart.push({ id, qty: 1 });
-    saveCart();
-    openCart();
+// Agrega un producto al carrito
+function agregarAlCarrito(id) {
+    const encontrado = carrito.find(i => i.id === id);
+    if (encontrado) encontrado.qty++;
+    else carrito.push({ id, qty: 1 });
+    guardarCarrito();
+    abrirCarrito();
 }
 
-function changeQty(id, delta) {
-    const idx = cart.findIndex(i => i.id === id);
+// Cambia la cantidad de un producto (+ o -)
+function cambiarCantidad(id, delta) {
+    const idx = carrito.findIndex(i => i.id === id);
     if (idx === -1) return;
-    cart[idx].qty += delta;
-    if (cart[idx].qty <= 0) cart.splice(idx, 1);
-    saveCart();
+    carrito[idx].qty += delta;
+    if (carrito[idx].qty <= 0) carrito.splice(idx, 1);
+    guardarCarrito();
 }
 
-function openCart() {
-    cartDrawer.style.display = 'block';
-    updateCartUI();
+// FUNCIONES PARA MOSTRAR / OCULTAR CARRITO
+function abrirCarrito() {
+    cajonCarrito.style.display = 'block';
+    actualizarCarritoUI();
 }
 
-function closeCart() {
-    cartDrawer.style.display = 'none';
+function cerrarCarrito() {
+    cajonCarrito.style.display = 'none';
 }
 
-document.getElementById('openCart').addEventListener('click', () => {
-    if (cartDrawer.style.display === 'block') closeCart();
-    else openCart();
+// Alternar apertura/cierre del carrito al hacer clic en el botón 🛒
+document.getElementById('abrirCarrito').addEventListener('click', () => {
+    if (cajonCarrito.style.display === 'block') cerrarCarrito();
+    else abrirCarrito();
 });
 
-function viewProduct(id) {
-    const p = products.find(x => x.id === id);
+// VER PRODUCTO INDIVIDUAL
+function verProducto(id) {
+    const p = productos.find(x => x.id === id);
     alert(p.title + "\n\n" + p.desc + "\nPrecio: $" + p.price.toFixed(2));
 }
 
-document.getElementById('checkoutBtn').addEventListener('click', () => {
-    if (cart.length === 0) {
+// BOTÓN DE FINALIZAR COMPRA
+document.getElementById('botonPagar').addEventListener('click', () => {
+    if (carrito.length === 0) {
         alert('El carrito está vacío');
         return;
     }
     alert('Procesando pago simulado... ¡gracias por tu compra!');
-    cart = [];
-    saveCart();
-    closeCart();
+    carrito = [];
+    guardarCarrito();
+    cerrarCarrito();
 });
 
-document.getElementById('subscribeBtn').addEventListener('click', () => {
-    const em = document.getElementById('subEmail').value.trim();
+// SUSCRIPCIÓN AL NEWSLETTER
+document.getElementById('botonSuscribir').addEventListener('click', () => {
+    const em = document.getElementById('correoSuscripcion').value.trim();
     if (!em) return alert('Ingresá un email');
     alert('Gracias por suscribirte: ' + em);
-    document.getElementById('subEmail').value = '';
+    document.getElementById('correoSuscripcion').value = '';
 });
 
-document.getElementById('contactForm').addEventListener('submit', (e) => {
+// FORMULARIO DE CONTACTO
+document.getElementById('formularioContacto').addEventListener('submit', (e) => {
     e.preventDefault();
-    const n = document.getElementById('name').value.trim();
-    const eMail = document.getElementById('email').value.trim();
-    const m = document.getElementById('message').value.trim();
+    const n = document.getElementById('nombre').value.trim();
+    const eMail = document.getElementById('correo').value.trim();
+    const m = document.getElementById('mensaje').value.trim();
+
     if (!n || !eMail || !m) return alert('Completá todos los campos');
     alert('Mensaje enviado. Nos comunicaremos pronto.');
-    document.getElementById('contactForm').reset();
+    document.getElementById('formularioContacto').reset();
 });
 
-updateCartUI();
+// INICIALIZAR INTERFAZ DEL CARRITO
+actualizarCarritoUI();

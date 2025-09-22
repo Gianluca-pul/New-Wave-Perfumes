@@ -10,90 +10,99 @@
 
 <body>
     <header>
-        <div class="container">
+        <!-- navegación -->
+        <div class="contenedor">
             <nav>
-                <div class="brand">
+                <div class="marca">
                     <h1>New Wave</h1>
                 </div>
-                <div class="navlinks">
-                    <a href="#about">Sobre Nosotros</a>
+                <div class="enlaces-nav">
+                    <a href="#sobre-nosotros">Sobre Nosotros</a>
                     <a href="#stock">Stock</a>
-                    <a href="#contact">Contáctanos</a>
-                    <a href="#payment">Métodos de Pago</a>
+                    <a href="#contacto">Contáctanos</a>
+                    <a href="#pago">Métodos de Pago</a>
                 </div>
-                <button id="openCart" class="btn cart-btn">
+                <button id="abrirCarrito" class="btn boton-carrito">
                     🛒
-                    <span id="cartCount" class="cart-count">0</span>
+                    <span id="contadorCarrito" class="contador-carrito">0</span>
                 </button>
             </nav>
         </div>
     </header>
 
-    <main class="container">
+    <main class="contenedor">
+
+        <!-- presentación -->
         <section class="hero">
             <div>
                 <h2>Perfumes Exclusivos</h2>
                 <p>Descubre fragancias únicas para cada momento especial.</p>
                 <a href="#stock" class="cta">Ver Catálogo</a>
             </div>
-            <div class="hero-card">
+            <div class="tarjeta-hero">
                 <img src="https://images.unsplash.com/photo-1596464716127-4b94f8a1fef6?auto=format&fit=crop&w=800&q=60"
                     alt="Perfume destacado">
             </div>
         </section>
 
+        <!-- Perfumes -->
         <section id="stock">
-            <div class="products-header">
+            <div class="encabezado-productos">
                 <h2>Nuestro Stock</h2>
-                <select id="filter" class="select">
+                <select id="filtro" class="select">
                     <option value="all">Todos</option>
                     <option value="hombre">Hombre</option>
                     <option value="mujer">Mujer</option>
                     <option value="unisex">Unisex</option>
                 </select>
             </div>
-            <div id="productGrid" class="grid"></div>
+            <div id="cuadriculaProductos" class="cuadricula"></div>
         </section>
 
-        <section id="about">
+        <!-- Sobre nosotros -->
+        <section id="sobre-nosotros">
             <h2>Sobre Nosotros</h2>
             <p>Somos una perfumería dedicada a traer las mejores fragancias internacionales a precios accesibles.</p>
         </section>
 
-        <section id="contact">
+        <!-- input de contacto -->
+        <section id="contacto">
             <h2>Contáctanos</h2>
-            <div class="grid-2">
-                <form id="contactForm">
-                    <input type="text" id="name" placeholder="Tu nombre">
-                    <input type="email" id="email" placeholder="Tu email">
-                    <textarea id="message" placeholder="Escribe tu mensaje"></textarea>
-                    <button class="btn btn-primary">Enviar</button>
+            <div class="cuadricula-2">
+                <form id="formularioContacto">
+                    <input type="text" id="nombre" placeholder="Tu nombre">
+                    <input type="email" id="correo" placeholder="Tu email">
+                    <textarea id="mensaje" placeholder="Escribe tu mensaje"></textarea>
+                    <button class="btn btn-primario">Enviar</button>
                 </form>
                 <div>
                     <h3>Suscríbete a nuestras novedades</h3>
-                    <input type="email" id="subEmail" placeholder="Tu email">
-                    <button id="subscribeBtn" class="btn btn-primary">Suscribirme</button>
+                    <input type="email" id="correoSuscripcion" placeholder="Tu email">
+                    <button id="botonSuscribir" class="btn btn-primario">Suscribirme</button>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="cartDrawer" class="drawer" style="display:none;">
-        <div class="cart-panel">
+    <!-- Carrito de compras -->
+    <div id="cajonCarrito" class="cajon" style="display:none;">
+        <div class="panel-carrito">
             <header>Carrito</header>
-            <div id="cartList" class="cart-list"></div>
-            <div class="cart-footer">
-                <strong>Total: <span id="cartTotal">$0</span></strong>
-                <button id="checkoutBtn" class="btn btn-primary">Finalizar Compra</button>
+            <div id="listaCarrito" class="lista-carrito"></div>
+            <div class="pie-carrito">
+                <strong>Total: <span id="totalCarrito">$0</span></strong>
+                <button id="botonPagar" class="btn btn-primario">Finalizar Compra</button>
             </div>
         </div>
     </div>
 
-    <footer class="container">
+    <!-- Footer -->
+    <footer class="pie">
         <p>Todos los derechos reservados © NewWavePerfumes</p>
     </footer>
 
     <script src="JS/script.js"></script>
+
 </body>
 
 </html>
